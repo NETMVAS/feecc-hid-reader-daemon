@@ -2,14 +2,14 @@ import asyncio
 import requests
 from EventToInternet.KeyboardListener import KeyboardListener
 
-API_ENDPOINT = "http://127.0.0.1:8080/api/rfid"
+API_ENDPOINT = "http://127.0.0.1:5000/api/hid_event"
 
 
-class RfidKeyboardListener(KeyboardListener):
-    """listen to the R20D-USB-8H10D RFID reader in the background"""
+class HidEventListener(KeyboardListener):
+    """listen to a barcode and RFID reader in the background"""
 
     async def dict_handler(self, dict_event: dict) -> None:
-        """handle RFID scan event and post data to a Rest API endpoint"""
+        """handle RFID or barcode scan event and post data to a Rest API endpoint"""
 
         requests.post(
             url=API_ENDPOINT,
