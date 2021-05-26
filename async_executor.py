@@ -19,10 +19,14 @@ class HidEventListener(KeyboardListener):
     async def dict_handler(self, dict_event: dict) -> None:
         """handle RFID or barcode scan event and post data to a Rest API endpoint"""
 
+        logging.debug(f"Handling event:\n{dict_event}")
+
         requests.post(
             url=API_ENDPOINT,
             json=dict_event
         )
+
+        logging.info(f"Event relayed to endpoint {API_ENDPOINT}")
 
 
 # start the daemon
