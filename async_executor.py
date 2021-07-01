@@ -1,16 +1,18 @@
 import asyncio
-import requests
-from EventToInternet.KeyboardListener import KeyboardListener
 import logging
+
+import requests
+
+from EventToInternet.KeyboardListener import KeyboardListener
 
 # set up logging
 logging.basicConfig(
     level=logging.DEBUG,
     filename="/etc/systemd/system/EventToInternet.log",
-    format="%(asctime)s %(levelname)s: %(message)s"
+    format="%(levelname)s (%(asctime)s): %(message)s",
 )
 
-API_ENDPOINT = "http://127.0.0.1:5000/api/hid_event"
+API_ENDPOINT = "http://127.0.0.1:8080/api/hid_event"
 
 
 class HidEventListener(KeyboardListener):
@@ -31,7 +33,6 @@ class HidEventListener(KeyboardListener):
 
 # start the daemon
 if __name__ == "__main__":
-
     # initialize an instance of the class
     HidEventListener()
 
