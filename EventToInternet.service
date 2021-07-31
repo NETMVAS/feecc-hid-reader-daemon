@@ -2,8 +2,8 @@
 Description=EventToInternet KeyLogger Daemon
 After=multi-user.target
 [Service]
-WorkingDirectory=/etc/systemd/system/EventToInternet
-ExecStart=/bin/sh -c "/bin/python3 async_executor.py"
+WorkingDirectory=/etc/systemd/system/feecc-hid-reader-daemon
+ExecStart=/bin/python3 async_executor.py
 User=root
 Type=simple
 Restart=on-failure
