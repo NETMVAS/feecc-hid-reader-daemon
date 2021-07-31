@@ -8,7 +8,7 @@ from EventToInternet.KeyboardListener import KeyboardListener
 # set up logging
 logging.basicConfig(
     level=logging.DEBUG,
-    filename="/etc/systemd/system/EventToInternet.log",
+    # filename="/etc/systemd/system/EventToInternet.log",
     format="%(levelname)s (%(asctime)s): %(message)s",
 )
 
