@@ -8,6 +8,9 @@ import evdev
 
 from EventToInternet import KEYBOARD_MAX_STRING_LENGTH, KEYBOARD_UPDATE_DEVICES_TIMEOUT, _config_event_to_string as cfg
 
+# Type annotations
+EventDict = tp.Dict[str, tp.Union[str, tp.Dict[str, str]]]
+
 
 @dataclass
 class KeyboardListener:
@@ -32,7 +35,7 @@ class KeyboardListener:
         for device in self.event_devices.values():
             asyncio.ensure_future(self._get_keyboard_events(device))
 
-    async def _update_devices(self):
+    async def _update_devices(self) -> None:
         while True:
             await asyncio.sleep(KEYBOARD_UPDATE_DEVICES_TIMEOUT)
             new_event_devices = set(evdev.list_devices())
@@ -51,7 +54,7 @@ class KeyboardListener:
                     except KeyError:
                         pass
 
-    async def _get_keyboard_events(self, device):
+    async def _get_keyboard_events(self, device) -> None:
         try:
             async for event in device.async_read_loop():
                 if event.type == evdev.ecodes.EV_KEY:
@@ -69,7 +72,7 @@ class KeyboardListener:
             if e.errno == 19:
                 return
 
-    async def _keyboard_event_handler(self, device, category):
+    async def _keyboard_event_handler(self, device, category) -> None:
         if self.memory_devices.get(device.path) is None:
             self.memory_devices[device.path] = {"string": "", "is_capital_letters": False, "is_capital_symbols": False}
         if len(self.memory_devices.get(device.path)["string"]) > KEYBOARD_MAX_STRING_LENGTH:
@@ -78,10 +81,10 @@ class KeyboardListener:
             return
         if category.keycode in self.send_trigger_keys:
             if len(self.memory_devices[device.path]["string"]) > 0:
-                json_event = {
+                json_event: EventDict = {
                     "string": self.memory_devices[device.path]["string"],
                     "name": device.name,
-                    "timestamp": datetime.timestamp(datetime.now()),
+                    "timestamp": str(datetime.timestamp(datetime.now())),
                     "info": {
                         "phys": device.phys,
                         "path": device.path,
@@ -132,8 +135,5 @@ class KeyboardListener:
         elif category.scancode in self.numpad_symbols_codes.keys():
             self.memory_devices[device.path]["string"] += self.numpad_symbols_codes.get(category.scancode)
 
-    async def dict_handler(self, dict_event):
-        logging.debug(
-            f"\nstring: {dict_event['string']}\n"
-            f"device: {''.join(['%s: %s; ' % (key, value) for (key, value) in dict_event['info'].items()])}"
-        )
+    async def dict_handler(self, event_dict: EventDict) -> None:
+        logging.debug(event_dict)
