@@ -100,8 +100,8 @@ class KeyboardListener:
                         "version": device.info.version,
                     },
                 }
-                await self.dict_handler(json_event)
                 self.memory_devices[device.path]["string"] = ""
+                await self.dict_handler(json_event)
             return
         if category.keycode in self.capitalize_all_keys:
             if category.keystate in [category.key_down, category.key_up]:
