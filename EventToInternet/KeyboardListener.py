@@ -18,9 +18,7 @@ EventDict = tp.Dict[str, tp.Union[str, tp.Dict[str, str]]]
 
 @dataclass
 class KeyboardListener:
-    regular_letters_codes: tp.Dict[int, str] = field(
-        default_factory=lambda: field(default_factory=lambda: cfg.regular_letters_codes.copy())
-    )
+    regular_letters_codes: tp.Dict[int, str] = field(default_factory=lambda: cfg.regular_letters_codes.copy())
     regular_symbols_codes: tp.Dict[int, str] = field(default_factory=lambda: cfg.regular_symbols_codes.copy())
     capital_letters_codes: tp.Dict[int, str] = field(default_factory=lambda: cfg.capital_letters_codes.copy())
     capital_symbols_codes: tp.Dict[int, str] = field(default_factory=lambda: cfg.capital_symbols_codes.copy())
