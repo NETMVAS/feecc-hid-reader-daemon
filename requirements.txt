@@ -1,2 +1,3 @@
 evdev
+loguru
 requests

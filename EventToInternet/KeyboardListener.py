@@ -1,12 +1,16 @@
 import asyncio
-import logging
 import typing as tp
 from dataclasses import dataclass, field
 from datetime import datetime
 
 import evdev
+from loguru import logger
 
-from EventToInternet import KEYBOARD_MAX_STRING_LENGTH, KEYBOARD_UPDATE_DEVICES_TIMEOUT, _config_event_to_string as cfg
+from EventToInternet import (
+    KEYBOARD_MAX_STRING_LENGTH,
+    KEYBOARD_UPDATE_DEVICES_TIMEOUT,
+    _config_event_to_string as cfg,
+)
 
 # Type annotations
 EventDict = tp.Dict[str, tp.Union[str, tp.Dict[str, str]]]
@@ -64,17 +68,20 @@ class KeyboardListener:
                     try:
                         await self._keyboard_event_handler(device, category)
                     except Exception as e:
-                        logging.error(
+                        logger.error(
                             "An exception of type {0} occurred. Arguments:\n{1!r}".format(type(e).__name__, e.args)
                         )
-                        pass
         except OSError as e:
             if e.errno == 19:
                 return
 
     async def _keyboard_event_handler(self, device, category) -> None:
         if self.memory_devices.get(device.path) is None:
-            self.memory_devices[device.path] = {"string": "", "is_capital_letters": False, "is_capital_symbols": False}
+            self.memory_devices[device.path] = {
+                "string": "",
+                "is_capital_letters": False,
+                "is_capital_symbols": False,
+            }
         if len(self.memory_devices.get(device.path)["string"]) > KEYBOARD_MAX_STRING_LENGTH:
             self.memory_devices[device.path]["string"] = self.memory_devices[device.path]["string"][1:]
         if category.keystate == category.key_hold:
@@ -99,7 +106,7 @@ class KeyboardListener:
                 self.memory_devices[device.path]["string"] = ""
             return
         if category.keycode in self.capitalize_all_keys:
-            if category.keystate == category.key_down or category.keystate == category.key_up:
+            if category.keystate in [category.key_down, category.key_up]:
                 self.memory_devices[device.path]["is_capital_letters"] = not self.memory_devices[device.path][
                     "is_capital_letters"
                 ]
@@ -136,4 +143,4 @@ class KeyboardListener:
             self.memory_devices[device.path]["string"] += self.numpad_symbols_codes.get(category.scancode)
 
     async def dict_handler(self, event_dict: EventDict) -> None:
-        logging.debug(event_dict)
+        logger.debug(event_dict)
