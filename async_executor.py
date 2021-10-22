@@ -9,7 +9,7 @@ from EventToInternet.logging import CONSOLE_LOGGING_CONFIG, FILE_LOGGING_CONFIG
 # apply logging configuration
 logger.configure(handlers=[CONSOLE_LOGGING_CONFIG, FILE_LOGGING_CONFIG])
 
-API_ENDPOINT = "http://127.0.0.1:8080/api/hid_event"
+API_ENDPOINT = "http://127.0.0.1:5000/workbench/hid-event"
 
 
 class HidEventListener(KeyboardListener):
