@@ -1,15 +1,16 @@
 import asyncio
-from loguru import logger
+import os
 
 import requests
+from loguru import logger
 
-from EventToInternet.KeyboardListener import KeyboardListener, EventDict
-from EventToInternet.logging import CONSOLE_LOGGING_CONFIG, FILE_LOGGING_CONFIG
+from EventToInternet.KeyboardListener import EventDict, KeyboardListener
+from EventToInternet.logging_config import CONSOLE_LOGGING_CONFIG, FILE_LOGGING_CONFIG
 
 # apply logging configuration
 logger.configure(handlers=[CONSOLE_LOGGING_CONFIG, FILE_LOGGING_CONFIG])
 
-API_ENDPOINT = "http://127.0.0.1:5000/workbench/hid-event"
+API_ENDPOINT = os.getenv("HID_EVENT_ENDPOINT", "http://127.0.0.1:5000/workbench/hid-event")
 
 
 class HidEventListener(KeyboardListener):
