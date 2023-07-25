@@ -45,17 +45,9 @@ loop.run_forever()
 ## Installation
 
 ```bash
-sudo apt update
-sudo apt upgrade
-sudo apt install git
-sudo apt install htop python3 python3-dev python3-pip gcc
-cd ~
-git clone https://github.com/Multi-Agent-io/feecc-hid-reader-daemon
-sudo mv feecc-hid-reader-daemon /etc/systemd/system/
-sudo chown -R root:root /etc/systemd/system/feecc-hid-reader-daemon
-cd /etc/systemd/system/feecc-hid-reader-daemon
-sudo python3 -m pip install -r requirements.txt
-sudo bash install.sh
+git clone https://github.com/Multi-Agent-io/feecc-hid-reader-daemon.git
+cd feecc-hid-reader-daemon
+sudo docker-compose up -d --build
 ```
 
 ## Uninstallation
