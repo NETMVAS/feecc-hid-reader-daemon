@@ -8,7 +8,10 @@ services:
     privileged: true
     restart: on-failure
     environment:
-      HID_EVENT_ENDPOINT: "http://127.0.0.1:5000/workbench/hid-event"
+      HID_EVENT__RFID_ENDPOINT: "http://127.0.0.1:5000/employee/handle-rfid-event"
+      HID_EVENT__BARCODE_ENDPOINT: "http://127.0.0.1:5000/workbench/handle-barcode-event"
+      HID_DEVICES__RFID_READER: "rfid_reader"  # RFID reader device name
+      HID_DEVICES__BARCODE_READER: "barcode_reader"  # Barcode reader device name
     volumes:
       - "/dev/usb:/dev/usb"
       - "/etc/timezone:/etc/timezone:ro"
